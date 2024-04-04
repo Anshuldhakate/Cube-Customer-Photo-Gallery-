@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const API_URL = 'https://random-image-pepebigotes.vercel.app/api/random-image';
+const API_URL = 'https://random-image-pepebigotes.vercel.app/api/random-image'; // Image API URL
 
 interface Customer {
   id: number;
@@ -10,21 +10,24 @@ interface Customer {
   title: string;
   address: string;
   description: string;
-} 
+}
 
 const CustomerPortalContainer = styled.div`
-  display: flex;
-  flex-direction: column; /* Ensure elements stack vertically */
-  padding: 20px;
+  background-color: lightgrey;
 `;
 
 const Heading = styled.h1`
   margin-bottom: 20px;
+  color: red;
 `;
+
+const Customer = styled.div`
+  display: flex;
+`
 
 const ScrollableContainer = styled.div`
   overflow-y: auto;
-  max-height: 80vh; /* Adjust as needed */
+  max-height: 80vh;
 `;
 
 const CustomerList = styled(ScrollableContainer)`
@@ -69,7 +72,7 @@ const CustomerPortal: React.FC = () => {
   const [photos, setPhotos] = useState<string[]>([]);
 
   const generateLorem = (length: number): string => {
-    const loremWords = ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'ut', 'aliquip', 'ex', 'ea', 'commodo', 'consequat', 'Duis', 'aute', 'irure', 'dolor', 'in', 'reprehenderit', 'in', 'voluptate', 'velit', 'esse', 'cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur', 'Excepteur', 'sint', 'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'in', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'];
+    const loremWords = ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'ut', 'aliquip', 'ex'];
 
     let loremText = '';
     for (let i = 0; i < length; i++) {
@@ -120,9 +123,9 @@ const CustomerPortal: React.FC = () => {
   };
 
   return (
-    
     <CustomerPortalContainer>
       <Heading>Welcome to Cube Customer Portal</Heading>
+      <Customer>
       <CustomerList>
         {customers.map(customer => (
           <CustomerCard
@@ -150,6 +153,7 @@ const CustomerPortal: React.FC = () => {
           </>
         )}
       </CustomerDetails>
+      </Customer>
     </CustomerPortalContainer>
   );
 };
