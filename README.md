@@ -28,7 +28,6 @@
 <h3>
   Installation
 </h3>
-<br/>
 <h4>Clone the repository:</h4>
 <p>git clone https://github.com/Anshuldhakate/Cube-Customer-Photo-Gallery-.git</p>
 <h4>Install dependencies:</h4>
