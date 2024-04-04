@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const API_URL = 'https://random-image-pepebigotes.vercel.app/lists/example-images-list.json';
+// const API_URL = 'https://random-image-pepebigotes.vercel.app/lists/example-images-list.json';
 
 interface Customer {
   id: number;
@@ -14,11 +14,20 @@ interface Customer {
 
 const CustomerPortalContainer = styled.div`
   background-color: lightgrey;
+  padding: 1%;
 `;
 
 const Heading = styled.h1`
-  margin-bottom: 20px;
+  
   color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid black;
+  width: 50%;
+  margin: auto;
+  padding: 1%;
+  margin-bottom: 20px;
+  background-color: lightyellow;
+
 `;
 
 const Customerdiv = styled.div`
@@ -33,6 +42,8 @@ const ScrollableContainer = styled.div`
 const CustomerList = styled(ScrollableContainer)`
   flex: 1;
   border-right: 1px solid #ccc;
+  color: blue;
+  font-weight: bold;
 `;
 
 const CustomerCard = styled.div<{ isSelected: boolean }>`
@@ -41,7 +52,7 @@ const CustomerCard = styled.div<{ isSelected: boolean }>`
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: ${props => props.isSelected ? '#e0e0e0' : 'transparent'};
+  background-color: ${props => props.isSelected ? '#e2eeb8' : 'transparent'};
 
   &:hover {
     background-color: #f0f0f0;
@@ -49,8 +60,10 @@ const CustomerCard = styled.div<{ isSelected: boolean }>`
 `;
 
 const CustomerDetails = styled(ScrollableContainer)`
+margin-top: -2%;
   flex: 2;
   padding: 20px;
+  color: #094f4f;
 `;
 
 const PhotoGrid = styled.div`
@@ -104,18 +117,17 @@ const CustomerPortal: React.FC = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await axios.get(API_URL);
-        setPhotos(response.data.images);
+        const response = await axios.get('http://localhost:3001/images'); 
+        setPhotos(response.data);
       } catch (error) {
         console.error('Error fetching photos:', error);
       }
     };
-
+  
     fetchPhotos();
-
-
+  
     const interval = setInterval(fetchPhotos, 10000);
-
+  
     return () => clearInterval(interval);
   }, []);
 
