@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const API_URL = 'https://random-image-pepebigotes.vercel.app/api/random-image'; // Image API URL
+const API_URL = 'https://random-image-pepebigotes.vercel.app/lists/example-images-list.json';
 
 interface Customer {
   id: number;
@@ -21,9 +21,9 @@ const Heading = styled.h1`
   color: red;
 `;
 
-const Customer = styled.div`
+const Customerdiv = styled.div`
   display: flex;
-`
+`;
 
 const ScrollableContainer = styled.div`
   overflow-y: auto;
@@ -64,12 +64,17 @@ const Photo = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 5px;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
 `;
 
 const CustomerPortal: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
+
+  
+  let rotationInterval: NodeJS.Timeout;
 
   const generateLorem = (length: number): string => {
     const loremWords = ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'ut', 'aliquip', 'ex'];
@@ -82,10 +87,7 @@ const CustomerPortal: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch customers from an API or any data source
-    // For demo purpose, using mock data
     const fetchCustomers = () => {
-      // Mocking 1000 customers
       const mockCustomers: Customer[] = Array.from({ length: 1000 }, (_, index) => ({
         id: index + 1,
         name: `Customer ${index + 1}`,
@@ -100,11 +102,10 @@ const CustomerPortal: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch photos from the API
     const fetchPhotos = async () => {
       try {
         const response = await axios.get(API_URL);
-        setPhotos(Array.from({ length: 9 }, () => response.data.imageUrl));
+        setPhotos(response.data.images);
       } catch (error) {
         console.error('Error fetching photos:', error);
       }
@@ -112,48 +113,63 @@ const CustomerPortal: React.FC = () => {
 
     fetchPhotos();
 
-    // Update photos every 10 seconds
+
     const interval = setInterval(fetchPhotos, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
+  // Function to start the rotation interval
+  const startRotation = () => {
+    rotationInterval = setInterval(rotatePhotos, 10000);
+  };
+
+  // Function to rotate the photos array
+  const rotatePhotos = () => {
+    setPhotos(prevPhotos => {
+      const rotatedPhotos = [...prevPhotos.slice(1), prevPhotos[0]];
+      return rotatedPhotos;
+    });
+  };
+
   const handleCustomerClick = (customer: Customer) => {
     setSelectedCustomer(customer);
+    clearInterval(rotationInterval); 
+    startRotation(); 
   };
 
   return (
     <CustomerPortalContainer>
       <Heading>Welcome to Cube Customer Portal</Heading>
-      <Customer>
-      <CustomerList>
-        {customers.map(customer => (
-          <CustomerCard
-            key={customer.id}
-            isSelected={selectedCustomer?.id === customer.id}
-            onClick={() => handleCustomerClick(customer)}
-          >
-            <div>{customer.name}</div>
-            <div>{customer.title}</div>
-          </CustomerCard>
-        ))}
-      </CustomerList>
-      <CustomerDetails>
-        {selectedCustomer && (
-          <>
-            <h2>{selectedCustomer.name}</h2>
-            <p>{selectedCustomer.title}</p>
-            <p>{selectedCustomer.address}</p>
-            <p>{selectedCustomer.description}</p>
-            <PhotoGrid>
-              {photos.map((photo, index) => (
-                <Photo key={index} src={photo} alt="img" />
-              ))}
-            </PhotoGrid>
-          </>
-        )}
-      </CustomerDetails>
-      </Customer>
+      <Customerdiv>
+        <CustomerList>
+          {customers.map(customer => (
+            <CustomerCard
+              key={customer.id}
+              isSelected={selectedCustomer?.id === customer.id}
+              onClick={() => handleCustomerClick(customer)}
+            >
+              <div>{customer.name}</div>
+              <div>{customer.title}</div>
+            </CustomerCard>
+          ))}
+        </CustomerList>
+        <CustomerDetails>
+          {selectedCustomer && (
+            <>
+              <h2>{selectedCustomer.name}</h2>
+              <p>{selectedCustomer.title}</p>
+              <p>{selectedCustomer.address}</p>
+              <p>{selectedCustomer.description}</p>
+              <PhotoGrid>
+                {photos.slice(0, 9).map((photo, index) => (
+                  <Photo key={index} src={photo} alt={`Image ${index}`} />
+                ))}
+              </PhotoGrid>
+            </>
+          )}
+        </CustomerDetails>
+      </Customerdiv>
     </CustomerPortalContainer>
   );
 };
