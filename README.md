@@ -29,9 +29,15 @@
   Installation
 </h4>
 <br/>
-<p></p>
+<h3>Clone the repository:</h3>
+<p>git clone https://github.com/Anshuldhakate/Cube-Customer-Photo-Gallery-.git</p>
+<h3>Install dependencies:</h3>
 <p>npm install</p>
+<h3>Start the development server:</h3>
 <p>npm start</p>
+
+<h4>Usage</h4>
+<p>Once the app is running, you'll see a list of customers on the left side. Click on a customer card to view their details on the right side.</p>
 
 
 
