@@ -17,3 +17,22 @@
   <li>Customer details include the customer's name, title, address, and a 3x3 grid of photos</li>
   <li>The photos in the grid change every 10 seconds, fetched from a public API.</li>
 </ul>
+<br/>
+<h4>Tech Stacks</h4>
+<ul>
+  <li>React</li>
+  <li>TypeScript</li>
+  <li>Styled Components (for styling)</li>
+</ul>
+<br/>
+<h4>
+  Installation
+</h4>
+<br/>
+<p></p>
+<p>npm install</p>
+<p>npm start</p>
+
+
+
+
